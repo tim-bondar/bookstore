@@ -1,4 +1,6 @@
 using DB;
+using DB.Abstraction;
+using DB.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +20,20 @@ namespace API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Will load all profiles from assembly that contains BooksContext
+            services.AddAutoMapper(typeof(BookstoreContext));
+
+            // DI section
+            services.AddScoped<IBooksRepository, BooksRepository>();
+
+            // DB context
             services.AddDbContext<BookstoreContext>(options => options.UseInMemoryDatabase("BookstoreDB"));
 
             services.AddControllers();
+
+            // Swagger configuration
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bookstore", Version = "v1" }); });
         }
 
@@ -34,6 +44,8 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
+
+                // Swagger configuration
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
