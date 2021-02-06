@@ -1,3 +1,4 @@
+using API.Middleware;
 using DB;
 using DB.Abstraction;
 using DB.Repositories;
@@ -49,6 +50,8 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

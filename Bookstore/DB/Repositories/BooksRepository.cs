@@ -63,7 +63,7 @@ namespace DB.Repositories
             var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
             if (book == null)
             {
-                throw new BookNotFoundException();
+                throw new BookNotFoundException($"Book with ID {id} was not found.");
             }
 
             return book;
