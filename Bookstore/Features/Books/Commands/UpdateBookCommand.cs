@@ -40,7 +40,7 @@ namespace Features.Books.Commands
         public async Task<BookModel> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
             var book = _mapper.Map<Book>(request.Book);
-            request.Book.Image.CopyToBook(book);
+            request.Book.Image?.CopyToBook(book);
 
             _logger.LogInformation($"Updating book with ID: {request.BookId}. Payload: {JsonConvert.SerializeObject(book)}");
 

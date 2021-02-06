@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +68,8 @@ namespace API.Middleware
             return ex switch
             {
                 BookNotFoundException bookEx => (new ErrorResponse(bookEx.Message), HttpStatusCode.NotFound),
+                ValidationException valEx => (new ErrorResponse("Validation failed.", valEx.Errors.Select(x => x.ErrorMessage).ToList()),
+                                              HttpStatusCode.BadRequest),
                 _ => (new ErrorResponse("Error processing request. Server error."), HttpStatusCode.InternalServerError)
             };
         }
@@ -99,13 +103,17 @@ namespace API.Middleware
         [DataContract(Name = "ErrorResponse")]
         public class ErrorResponse
         {
-            public ErrorResponse(string message)
+            public ErrorResponse(string message, List<string> additionalInfo = null)
             {
                 Message = message;
+                AdditionalInfo = additionalInfo;
             }
 
             [DataMember(Name = "Message")]
             public string Message { get; }
+
+            [DataMember(Name = "AdditionalInfo")]
+            public List<string> AdditionalInfo { get; }
         }
     }
 }

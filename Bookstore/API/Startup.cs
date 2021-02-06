@@ -3,6 +3,8 @@ using DB;
 using DB.Abstraction;
 using DB.Repositories;
 using Features;
+using Features.Books.Validators;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,12 +32,14 @@ namespace API
 
             // DI section
             services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             // DB context
             services.AddDbContext<BookstoreContext>(options => options.UseInMemoryDatabase("BookstoreDB"));
 
             // Mediator setup
             services.AddMediatR(typeof(MapProfile).Assembly);
+            services.AddValidatorsFromAssembly(typeof(MapProfile).Assembly);
 
             services.AddControllers();
 

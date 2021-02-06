@@ -21,7 +21,7 @@ namespace DB.Repositories
         public async Task<List<Book>> GetAll()
         {
             // TODO: implement pagination
-            return await _context.Books.ToListAsync();
+            return await _context.Books.AsNoTracking().ToListAsync();
         }
 
         public async Task<Book> GetById(Guid id)
@@ -61,7 +61,10 @@ namespace DB.Repositories
 
         private async Task<Book> GetBook(Guid id)
         {
-            var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
+            var book = await _context.Books
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (book == null)
             {
                 throw new BookNotFoundException($"Book with ID {id} was not found.");

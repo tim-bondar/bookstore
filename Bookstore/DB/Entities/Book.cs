@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Core;
 
 namespace DB.Entities
 {
@@ -8,13 +9,13 @@ namespace DB.Entities
         public Guid Id { get; set; }
 
         [Required]
-        [StringLength(128)]
+        [StringLength(Constants.MaxTitleSize)]
         public string Title { get; set; }
 
-        [StringLength(2000)]
+        [StringLength(Constants.MaxDescriptionSize)]
         public string Description { get; set; }
 
-        [StringLength(128)]
+        [StringLength(Constants.MaxAuthorSize)]
         public string Author { get; set; }
 
         [Range(0, double.MaxValue)]

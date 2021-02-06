@@ -8,10 +8,13 @@ namespace Features.Helpers
     {
         public static void CopyToBook(this IFormFile file, Book book)
         {
-            book.ImageContentType = file.ContentType;
-            using var ms = new MemoryStream();
-            file.CopyTo(ms);
-            book.ImageContent = ms.ToArray();
+            if (file.Length > 0)
+            {
+                book.ImageContentType = file.ContentType;
+                using var ms = new MemoryStream();
+                file.CopyTo(ms);
+                book.ImageContent = ms.ToArray();
+            }
         }
     }
 }
