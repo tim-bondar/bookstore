@@ -14,6 +14,7 @@ namespace DB.Repositories
 
         public BooksRepository(BookstoreContext context)
         {
+            context.Database.EnsureCreated();
             _context = context;
         }
 

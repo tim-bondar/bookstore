@@ -7,15 +7,13 @@
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="9.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />
       <ProjectReference Include="..\DB\DB.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Books\Commands" />
     </ItemGroup>
 
 </Project>

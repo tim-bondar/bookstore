@@ -20,7 +20,10 @@ namespace DB.Entities
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
 
-        public Guid? ImageId { get; set; }
-        public virtual CoverImage Image { get; set; }
+        [Required]
+        public byte[] ImageContent { get; set; }
+
+        [Required]
+        public string ImageContentType { get; set; }
     }
 }

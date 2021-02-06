@@ -34,6 +34,7 @@ namespace API
             // DB context
             services.AddDbContext<BookstoreContext>(options => options.UseInMemoryDatabase("BookstoreDB"));
 
+            // Mediator setup
             services.AddMediatR(typeof(MapProfile).Assembly);
 
             services.AddControllers();
@@ -54,13 +55,15 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
+            // Error handler
             app.UseMiddleware<ExceptionHandlerMiddleware>();
-            app.UseM
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // We dont use authorization is this application
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

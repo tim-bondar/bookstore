@@ -9,17 +9,9 @@ namespace Features
     {
         public MapProfile()
         {
-            // TODO: implement fields mapping
+            CreateMap<AddBookModel, Book>();
             CreateMap<Book, BookModel>();
-
-            // TODO: implement fields mapping
             CreateMap<BookModel, Book>();
-
-            // TODO: implement fields mapping
-            CreateMap<CoverImage, CoverImageModel>();
-
-            // TODO: implement fields mapping
-            CreateMap<CoverImageModel, CoverImage>();
         }
     }
 }

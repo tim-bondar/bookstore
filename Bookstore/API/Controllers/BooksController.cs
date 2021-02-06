@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Core.Models;
+using Features.Books.Commands;
 using Features.Books.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -39,10 +40,19 @@ namespace API.Controllers
         [HttpPut("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Update(Guid id, [FromBody] BookModel book)
+        [Consumes("application/json", "multipart/form-data")]
+        public async Task<IActionResult> Update(Guid id, [FromForm] AddBookModel book)
         {
-            // TODO
-            return Ok();
+            return Ok(await _mediator.Send(new UpdateBookCommand(id, book)));
+        }
+
+        [HttpPost]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
+        [Consumes("application/json", "multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] AddBookModel book)
+        {
+            return Ok(await _mediator.Send(new AddBookCommand(book)));
         }
 
         [HttpDelete("{id}")]
@@ -50,17 +60,7 @@ namespace API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            // TODO
-            return Ok();
-        }
-
-        [HttpPost]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Create([FromBody] BookModel book)
-        {
-            // TODO
-            return Ok();
+            return Ok(await _mediator.Send(new DeleteBookCommand(id)));
         }
     }
 }
