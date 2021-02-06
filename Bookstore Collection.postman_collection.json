@@ -1,0 +1,472 @@
+{
+	"info": {
+		"_postman_id": "f31ecc0d-15b2-4391-b33d-405dac75b8e6",
+		"name": "Bookstore Collection",
+		"description": "Bookstore API calls collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all books [Positive]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74720663-8c5c-4ffc-9ae8-d308a22ddb49",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Count test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.greaterThan(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books"
+					]
+				},
+				"description": "Request for getting all existing books"
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific book [Positive]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6d966a58-9d0f-4ff2-ac34-0e2abe783d94",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Title test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(\"Book Number One\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Contains cover image\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.imageContent).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/books/b8c56d97-ed68-4671-a503-21bda97682f3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books",
+						"b8c56d97-ed68-4671-a503-21bda97682f3"
+					]
+				},
+				"description": "Request for getting book by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Create new book [Positive]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d26aae04-f07a-44be-b255-d575157a9fe1",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Title is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(\"New Book\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Price is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.price).to.eql(13.99);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Contains cover image\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.imageContent).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Title",
+							"value": "New Book",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "Very cool book",
+							"type": "text"
+						},
+						{
+							"key": "Author",
+							"value": "S. L. Jerkson",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"type": "file",
+							"src": "/C:/Users/Timus/Desktop/The-book-of-chaos.jpg"
+						},
+						{
+							"key": "Price",
+							"value": "13.99",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books"
+					]
+				},
+				"description": "Positive request to create new book with image"
+			},
+			"response": []
+		},
+		{
+			"name": "Update book's title [Positive]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8cde417f-62f5-4ffa-8a6b-1ed9af5d66cf",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Title test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(\"Updated Book\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Title",
+							"value": "Updated Book",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "Very cool book",
+							"type": "text"
+						},
+						{
+							"key": "Author",
+							"value": "S. L. Jerkson",
+							"type": "text"
+						},
+						{
+							"key": "Price",
+							"value": "13.99",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"type": "file",
+							"src": "/C:/Users/Timus/Desktop/The-book-of-chaos.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/books/b8c56d97-ed68-4671-a503-21bda97682f3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books",
+						"b8c56d97-ed68-4671-a503-21bda97682f3"
+					]
+				},
+				"description": "Request to update book's title"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete existing book [Positive]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6302870d-8530-499a-a919-503cc73fb3a0",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/books/b8c56d97-ed68-4671-a503-21bda97682f3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books",
+						"b8c56d97-ed68-4671-a503-21bda97682f3"
+					]
+				},
+				"description": "Request for removing existing book"
+			},
+			"response": []
+		},
+		{
+			"name": "Get non-existing book [Negative]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa2bdb78-840a-4847-9e67-36c706804639",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Book with ID b8c56d97-aaaa-4671-a503-21bda97682f3 was not found.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/books/b8c56d97-aaaa-4671-a503-21bda97682f3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books",
+						"b8c56d97-aaaa-4671-a503-21bda97682f3"
+					]
+				},
+				"description": "Requesting non-existing book"
+			},
+			"response": []
+		},
+		{
+			"name": "Create new book [Negative]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "039bdffe-8413-438c-a138-7eb61e9fc297",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message property test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Validation failed.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Additional info tests\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Title' must not be empty.\");\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Author' must not be empty.\");\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Price' must be greater than '0'.\");\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Image' must not be empty.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:5000/books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books"
+					]
+				},
+				"description": "Request for new book creation with bad data"
+			},
+			"response": []
+		},
+		{
+			"name": "Update a book [Negative]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4341f81e-ce5d-4633-aacd-b226612dff2e",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message property test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Validation failed.\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Additional info tests\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Title' must not be empty.\");\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Author' must not be empty.\");\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Price' must be greater than '0'.\");\r",
+							"    pm.expect(jsonData.additionalInfo).to.contain( \"'Book. Image' must not be empty.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:5000/books/93c3a6c5-dfde-4dc6-af6f-9a3c23be5ea8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books",
+						"93c3a6c5-dfde-4dc6-af6f-9a3c23be5ea8"
+					]
+				},
+				"description": "Request for book modification with bad data"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete non-existing book [Negative]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "17510856-cd13-48ba-bf3f-1ecea7d078b7",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Message test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Book with ID b8c56d97-aaaa-4671-a503-21bda97682f3 was not found.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/books/b8c56d97-aaaa-4671-a503-21bda97682f3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"books",
+						"b8c56d97-aaaa-4671-a503-21bda97682f3"
+					]
+				},
+				"description": "Request for removing non-existing book"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

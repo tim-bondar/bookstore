@@ -10,10 +10,20 @@ namespace Features.Books.Validators
         public UpdateBookCommandValidator()
         {
             // All these rules were implemented without requirements, just common sense.
-            RuleFor(c => c.Book.Title).NotEmpty();
-            RuleFor(c => c.Book.Title).Length(1, Constants.MaxTitleSize);
-            RuleFor(c => c.Book.Author).NotEmpty();
-            RuleFor(c => c.Book.Author).Length(1, Constants.MaxAuthorSize);
+            RuleFor(c => c.Book.Title).NotNull();
+            RuleFor(c => c.Book.Title).NotEmpty()
+                .ChildRules(x =>
+                {
+                    x.RuleFor(c => c).Length(1, Constants.MaxTitleSize);
+                });
+
+            RuleFor(c => c.Book.Author).NotNull();
+            RuleFor(c => c.Book.Author).NotEmpty()
+                .ChildRules(x =>
+                {
+                    x.RuleFor(c => c).Length(1, Constants.MaxAuthorSize);
+                });
+
             RuleFor(c => c.Book.Description).Length(0, Constants.MaxDescriptionSize);
             RuleFor(c => c.Book.Price).GreaterThan(0);
             RuleFor(c => c.Book.Image).NotNull()

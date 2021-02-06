@@ -9,7 +9,10 @@ namespace Features
     {
         public MapProfile()
         {
-            CreateMap<AddBookModel, Book>();
+            CreateMap<AddBookModel, Book>()
+                .ForMember(x => x.ImageContent, x => x.Ignore())
+                .ForMember(x => x.ImageContentType, x => x.MapFrom(f => f.Image.ContentType));
+
             CreateMap<Book, BookModel>();
             CreateMap<BookModel, Book>();
         }
