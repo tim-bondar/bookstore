@@ -11,11 +11,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\DB\DB.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Books\Commands" />
-      <Folder Include="Books\Queries" />
     </ItemGroup>
 
 </Project>

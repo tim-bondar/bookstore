@@ -2,7 +2,7 @@
 using Core.Models;
 using DB.Entities;
 
-namespace DB
+namespace Features
 {
     // Used via reflection in Startup.cs
     public class MapProfile : Profile

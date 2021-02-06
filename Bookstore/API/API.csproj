@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DB\DB.csproj" />
+      <ProjectReference Include="..\Features\Features.csproj" />
     </ItemGroup>
 
 </Project>

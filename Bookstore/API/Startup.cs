@@ -2,6 +2,8 @@ using API.Middleware;
 using DB;
 using DB.Abstraction;
 using DB.Repositories;
+using Features;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,13 +26,15 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             // Will load all profiles from assembly that contains BooksContext
-            services.AddAutoMapper(typeof(BookstoreContext));
+            services.AddAutoMapper(typeof(MapProfile));
 
             // DI section
             services.AddScoped<IBooksRepository, BooksRepository>();
 
             // DB context
             services.AddDbContext<BookstoreContext>(options => options.UseInMemoryDatabase("BookstoreDB"));
+
+            services.AddMediatR(typeof(MapProfile).Assembly);
 
             services.AddControllers();
 
@@ -51,7 +55,7 @@ namespace API
             }
 
             app.UseMiddleware<ExceptionHandlerMiddleware>();
-            
+            app.UseM
             app.UseHttpsRedirection();
 
             app.UseRouting();
