@@ -8,10 +8,9 @@ namespace DB.Abstraction
     public interface IBooksRepository
     {
         Task<List<Book>> GetAll();
-        Task<Book> GetById(Guid id);
+        Task<Book> GetById(Guid id, bool includeImage = false);
         Task Delete(Guid id);
         Task<Book> Update(Guid id, Book newBook, CoverImage coverImage);
         Task<Book> Add(Book book, CoverImage coverImage);
-        Task<CoverImage> GetImageByBookId(Guid bookId);
     }
 }

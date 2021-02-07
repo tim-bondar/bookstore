@@ -13,12 +13,12 @@ namespace Features.Books.Commands
 {
     public class AddBookCommand : IRequest<BookModel>
     {
-        public AddBookCommand(AddBookModel model)
+        public AddBookCommand(NewBookModel model)
         {
             Book = model;
         }
 
-        public AddBookModel Book { get; }
+        public NewBookModel Book { get; }
     }
 
     public class AddBookCommandHandler : IRequestHandler<AddBookCommand, BookModel>

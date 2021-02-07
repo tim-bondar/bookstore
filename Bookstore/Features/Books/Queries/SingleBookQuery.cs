@@ -33,10 +33,10 @@ namespace Features.Books.Queries
         public async Task<BookModel> Handle(SingleBookQuery request, CancellationToken cancellationToken)
         {
             var book = await _repository.GetById(request.BookId);
-            
+
             if (book == null)
             {
-                throw new BookNotFoundException($"Book with ID {request.BookId} was not found.");
+                throw new NotFoundException($"Book with ID {request.BookId} was not found.");
             }
 
             return _mapper.Map<BookModel>(book);

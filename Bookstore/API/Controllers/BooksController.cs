@@ -41,7 +41,7 @@ namespace API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Update(Guid id, [FromForm] AddBookModel book)
+        public async Task<IActionResult> Update(Guid id, [FromForm] NewBookModel book)
         {
             return Ok(await _mediator.Send(new UpdateBookCommand(id, book)));
         }
@@ -50,7 +50,7 @@ namespace API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create([FromForm] AddBookModel book)
+        public async Task<IActionResult> Create([FromForm] NewBookModel book)
         {
             var result = await _mediator.Send(new AddBookCommand(book));
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);

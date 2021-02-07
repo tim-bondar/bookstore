@@ -23,9 +23,9 @@ namespace DB.Repositories
             return await _context.Books.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Book> GetById(Guid id)
+        public async Task<Book> GetById(Guid id, bool includeImage = false)
         {
-            return await GetBook(id);
+            return includeImage ? await GetBookWithImage(id) : await GetBook(id);
         }
 
         public async Task Delete(Guid id)
@@ -73,12 +73,6 @@ namespace DB.Repositories
             await _context.SaveChangesAsync();
 
             return await GetBook(book.Id);
-        }
-
-        public async Task<CoverImage> GetImageByBookId(Guid bookId)
-        {
-            var book = await GetBookWithImage(bookId);
-            return book?.CoverImage;
         }
 
         private async Task<Book> GetBook(Guid id)

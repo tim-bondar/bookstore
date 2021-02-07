@@ -15,14 +15,14 @@ namespace Features.Books.Commands
 {
     public class UpdateBookCommand : IRequest<BookModel>
     {
-        public UpdateBookCommand(Guid bookId, AddBookModel model)
+        public UpdateBookCommand(Guid bookId, NewBookModel model)
         {
             BookId = bookId;
             Book = model;
         }
 
         public Guid BookId { get; }
-        public AddBookModel Book { get; }
+        public NewBookModel Book { get; }
     }
 
     public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, BookModel>
@@ -44,7 +44,7 @@ namespace Features.Books.Commands
 
             if (book == null)
             {
-                throw new BookNotFoundException($"Book with ID {request.BookId} was not found.");
+                throw new NotFoundException($"Book with ID {request.BookId} was not found.");
             }
 
             book = _mapper.Map<Book>(request.Book);

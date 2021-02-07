@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Core.Models
 {
-    public class AddBookModel
+    public class NewBookModel
     {
         public string Title { get; set; }
         public string Description { get; set; }

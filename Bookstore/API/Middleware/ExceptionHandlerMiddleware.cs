@@ -67,7 +67,7 @@ namespace API.Middleware
             // Custom exception handling
             return ex switch
             {
-                BookNotFoundException bookEx => (new ErrorResponse(bookEx.Message), HttpStatusCode.NotFound),
+                NotFoundException bookEx => (new ErrorResponse(bookEx.Message), HttpStatusCode.NotFound),
                 ValidationException valEx => (new ErrorResponse("Validation failed.", valEx.Errors.Select(x => x.ErrorMessage).ToList()),
                                               HttpStatusCode.BadRequest),
                 _ => (new ErrorResponse("Error processing request. Server error."), HttpStatusCode.InternalServerError)
