@@ -2,6 +2,17 @@
 Simple application for CRUD operation with Books metadata.
  Allowed cover images are PNG and JPG formats with maximum size of 10 MB.
 
+.Net 5.0 was used to develop API. EF Core was used to develop in-memory DB.
+
+Was used CQS (command-query separation) pattern as an approach to develop this application.
+MediatR package was used to set up this pattern.
+
+Also was used Automapper to map transform similar objects. 
+xUnit and FakeItEasy used to develop unit tests.
+
+Decided to separate cover image content from Book metadata so client can easily cache images by links.
+(Also in future images might be stored in different DB)
+
 ## How to use
 
 ### Run from source code
