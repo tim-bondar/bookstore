@@ -2,6 +2,7 @@
 {
     public static class Constants
     {
+        public const string CoverImageUrlTemplate = "/books/{0}/image";
         public const int MaxAuthorSize = 128;
         public const int MaxTitleSize = 128;
         public const int MaxDescriptionSize = 2000;

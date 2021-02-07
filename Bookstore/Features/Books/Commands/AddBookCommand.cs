@@ -37,11 +37,11 @@ namespace Features.Books.Commands
         public async Task<BookModel> Handle(AddBookCommand request, CancellationToken cancellationToken)
         {
             var book = _mapper.Map<Book>(request.Book);
-            request.Book.Image.CopyToBook(book);
+            var img = request.Book.Image.ToCoverImage();
 
-            _logger.LogInformation($"Adding new book. Payload: {JsonConvert.SerializeObject(book)}");
+            _logger.LogInformation($"Adding new book. Payload: {JsonConvert.SerializeObject(book)}. With image size: {img.Content.Length} bytes.");
 
-            return _mapper.Map<BookModel>(await _repository.Add(book));
+            return _mapper.Map<BookModel>(await _repository.Add(book, img));
         }
     }
 }

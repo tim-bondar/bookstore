@@ -12,7 +12,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "74720663-8c5c-4ffc-9ae8-d308a22ddb49",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -50,7 +49,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6d966a58-9d0f-4ff2-ac34-0e2abe783d94",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -61,14 +59,23 @@
 							"    pm.expect(jsonData.title).to.eql(\"Book Number One\");\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Contains cover image\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.imageContent).to.exist;\r",
-							"});\r",
-							"\r",
 							"pm.test(\"Content-Type is present\", function () {\r",
 							"    pm.response.to.have.header(\"Content-Type\");\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Contains cover image url\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.imageUrl).to.eql(\"/books/\" + jsonData.id + \"/image\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Contains cover image content\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.sendRequest(\"/books/\" + jsonData.id + \"/image\", function (err, response) {\r",
+							"        pm.expect(response).to.exist;\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -99,10 +106,13 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d26aae04-f07a-44be-b255-d575157a9fe1",
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Title is correct\", function () {\r",
@@ -115,14 +125,18 @@
 							"    pm.expect(jsonData.price).to.eql(13.99);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Contains cover image\", function () {\r",
+							"pm.test(\"Contains cover image url\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.imageContent).to.exist;\r",
+							"    pm.expect(jsonData.imageUrl).to.eql(\"/books/\" + jsonData.id + \"/image\");\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Content-Type is present\", function () {\r",
-							"    pm.response.to.have.header(\"Content-Type\");\r",
-							"});"
+							"pm.test(\"Contains cover image content\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.sendRequest(\"/books/\" + jsonData.id + \"/image\", function (err, response) {\r",
+							"        pm.expect(response).to.exist;\r",
+							"    });\r",
+							"});\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -182,7 +196,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8cde417f-62f5-4ffa-8a6b-1ed9af5d66cf",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -252,10 +265,9 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6302870d-8530-499a-a919-503cc73fb3a0",
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
 							"});\r",
 							"\r",
 							""
@@ -289,7 +301,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "fa2bdb78-840a-4847-9e67-36c706804639",
 						"exec": [
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
@@ -329,7 +340,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "039bdffe-8413-438c-a138-7eb61e9fc297",
 						"exec": [
 							"pm.test(\"Status code is 400\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
@@ -381,7 +391,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4341f81e-ce5d-4633-aacd-b226612dff2e",
 						"exec": [
 							"pm.test(\"Status code is 400\", function () {\r",
 							"    pm.response.to.have.status(400);\r",
@@ -433,7 +442,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "17510856-cd13-48ba-bf3f-1ecea7d078b7",
 						"exec": [
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
@@ -467,6 +475,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

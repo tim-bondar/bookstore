@@ -43,20 +43,24 @@ namespace Tests.FeatureTests
             };
 
             var book = _mapper.Map<Book>(newBook);
-            book.ImageContent = file;
-            A.CallTo(() => _repository.Add(A<Book>.Ignored)).Returns(book);
+            book.CoverImage = new CoverImage
+            {
+                Content = file,
+                ContentType = contentType
+            };
+
+            A.CallTo(() => _repository.Add(A<Book>.Ignored, A<CoverImage>.Ignored)).Returns(book);
 
             // Act
             var result = await _handler.Handle(new AddBookCommand(newBook), default);
 
             // Assert
-            A.CallTo(() => _repository.Add(A<Book>.Ignored)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _repository.Add(A<Book>.Ignored, A<CoverImage>.Ignored)).MustHaveHappenedOnceExactly();
             Assert.Equal(newBook.Title, result.Title);
             Assert.Equal(newBook.Author, result.Author);
             Assert.Equal(newBook.Description, result.Description);
             Assert.Equal(newBook.Price, result.Price);
-            Assert.Equal(contentType, result.ImageContentType);
-            Assert.Equal(file.Length, result.ImageContent.Length);
+            Assert.Equal($"/books/{result.Id}/image", result.ImageUrl);
         }
 
         [Theory]

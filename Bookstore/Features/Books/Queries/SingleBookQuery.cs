@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Core.Exceptions;
 using Core.Models;
 using DB.Abstraction;
 using MediatR;
@@ -32,6 +33,12 @@ namespace Features.Books.Queries
         public async Task<BookModel> Handle(SingleBookQuery request, CancellationToken cancellationToken)
         {
             var book = await _repository.GetById(request.BookId);
+            
+            if (book == null)
+            {
+                throw new BookNotFoundException($"Book with ID {request.BookId} was not found.");
+            }
+
             return _mapper.Map<BookModel>(book);
         }
     }

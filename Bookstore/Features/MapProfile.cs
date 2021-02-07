@@ -10,11 +10,10 @@ namespace Features
         public MapProfile()
         {
             CreateMap<AddBookModel, Book>()
-                .ForMember(x => x.ImageContent, x => x.Ignore())
-                .ForMember(x => x.ImageContentType, x => x.MapFrom(f => f.Image.ContentType));
+                .ForMember(x => x.CoverImage, x => x.Ignore());
 
             CreateMap<Book, BookModel>();
-            CreateMap<BookModel, Book>();
+            CreateMap<CoverImage, FileContent>();
         }
     }
 }

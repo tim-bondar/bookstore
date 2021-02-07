@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Exceptions;
 using DB.Abstraction;
 using DB.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ namespace DB.Repositories
 
         public async Task<List<Book>> GetAll()
         {
-            // TODO: implement pagination
+            // TODO: implement pagination?
             return await _context.Books.AsNoTracking().ToListAsync();
         }
 
@@ -31,27 +30,44 @@ namespace DB.Repositories
 
         public async Task Delete(Guid id)
         {
-            var book = await GetBook(id);
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
+            var book = await GetBookWithImage(id);
+            if (book != null)
+            {
+                _context.Images.Remove(book.CoverImage);
+                _context.Books.Remove(book);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task<Book> Update(Guid id, Book book)
+        public async Task<Book> Update(Guid id, Book newBook, CoverImage coverImage)
         {
-            var oldBook = await GetBook(id);
-
             // Preventing modification of different entity
-            book.Id = oldBook.Id;
+            var book = await GetBookWithImage(id);
+
+            book.Id = id;
+            book.Author = newBook.Author;
+            book.Title = newBook.Title;
+            book.Description = newBook.Description;
+            book.Price = newBook.Price;
+            book.CoverImage.Content = coverImage.Content;
+            book.CoverImage.ContentType = coverImage.ContentType;
 
             _context.Books.Attach(book).State = EntityState.Modified;
+            _context.Images.Attach(book.CoverImage).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return await GetBook(id);
         }
 
-        public async Task<Book> Add(Book book)
+        public async Task<Book> Add(Book book, CoverImage coverImage)
         {
             book.Id = Guid.NewGuid();
+            book.CoverImage = new CoverImage
+            {
+                Id = Guid.NewGuid(),
+                Content = coverImage.Content,
+                ContentType = coverImage.ContentType
+            };
 
             await _context.Books.AddAsync(book);
             await _context.SaveChangesAsync();
@@ -59,18 +75,25 @@ namespace DB.Repositories
             return await GetBook(book.Id);
         }
 
+        public async Task<CoverImage> GetImageByBookId(Guid bookId)
+        {
+            var book = await GetBookWithImage(bookId);
+            return book?.CoverImage;
+        }
+
         private async Task<Book> GetBook(Guid id)
         {
-            var book = await _context.Books
+            return await _context.Books
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
 
-            if (book == null)
-            {
-                throw new BookNotFoundException($"Book with ID {id} was not found.");
-            }
-
-            return book;
+        private async Task<Book> GetBookWithImage(Guid id)
+        {
+            return await _context.Books
+                .Include(x => x.CoverImage)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

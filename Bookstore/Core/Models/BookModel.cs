@@ -9,7 +9,6 @@ namespace Core.Models
         public string Description { get; set; }
         public string Author { get; set; }
         public decimal Price { get; set; }
-        public byte[] ImageContent { get; set; }
-        public string ImageContentType { get; set; }
+        public string ImageUrl => string.Format(Constants.CoverImageUrlTemplate, Id);
     }
 }

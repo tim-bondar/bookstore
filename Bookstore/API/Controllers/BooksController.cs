@@ -40,7 +40,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
-        [Consumes("application/json", "multipart/form-data")]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Update(Guid id, [FromForm] AddBookModel book)
         {
             return Ok(await _mediator.Send(new UpdateBookCommand(id, book)));
@@ -49,10 +49,11 @@ namespace API.Controllers
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
-        [Consumes("application/json", "multipart/form-data")]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] AddBookModel book)
         {
-            return Ok(await _mediator.Send(new AddBookCommand(book)));
+            var result = await _mediator.Send(new AddBookCommand(book));
+            return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
         [HttpDelete("{id}")]
@@ -60,7 +61,16 @@ namespace API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await _mediator.Send(new DeleteBookCommand(id)));
+            await _mediator.Send(new DeleteBookCommand(id));
+            return NoContent();
+        }
+
+        [HttpGet("{id}/image")]
+        [ProducesResponseType(typeof(BookModel), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetImage(Guid id)
+        {
+            var file = await _mediator.Send(new BookImageQuery(id));
+            return File(file.Content, file.ContentType);
         }
     }
 }

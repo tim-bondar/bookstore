@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Core.Exceptions;
 using Core.Models;
 using DB.Abstraction;
 using DB.Entities;
@@ -39,12 +40,19 @@ namespace Features.Books.Commands
 
         public async Task<BookModel> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
-            var book = _mapper.Map<Book>(request.Book);
-            request.Book.Image?.CopyToBook(book);
+            var book = await _repository.GetById(request.BookId);
 
-            _logger.LogInformation($"Updating book with ID: {request.BookId}. Payload: {JsonConvert.SerializeObject(book)}");
+            if (book == null)
+            {
+                throw new BookNotFoundException($"Book with ID {request.BookId} was not found.");
+            }
 
-            return _mapper.Map<BookModel>(await _repository.Update(request.BookId, book));
+            book = _mapper.Map<Book>(request.Book);
+            var img = request.Book.Image.ToCoverImage();
+
+            _logger.LogInformation($"Updating book with ID: {request.BookId}. Payload: {JsonConvert.SerializeObject(book)}. With image size: {img.Content.Length} bytes.");
+
+            return _mapper.Map<BookModel>(await _repository.Update(request.BookId, book, img));
         }
     }
 }

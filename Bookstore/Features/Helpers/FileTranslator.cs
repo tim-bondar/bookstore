@@ -6,15 +6,22 @@ namespace Features.Helpers
 {
     public static class FileTranslator
     {
-        public static void CopyToBook(this IFormFile file, Book book)
+        public static CoverImage ToCoverImage(this IFormFile file)
         {
             if (file.Length > 0)
             {
-                book.ImageContentType = file.ContentType;
+                var img = new CoverImage
+                {
+                    ContentType = file.ContentType
+                };
+
                 using var ms = new MemoryStream();
                 file.CopyTo(ms);
-                book.ImageContent = ms.ToArray();
+                img.Content = ms.ToArray();
+                return img;
             }
+
+            return null;
         }
     }
 }

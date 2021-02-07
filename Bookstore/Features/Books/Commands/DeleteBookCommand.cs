@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Exceptions;
 using DB.Abstraction;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,14 @@ namespace Features.Books.Commands
         public async Task<Unit> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Deleting book with ID: {request.BookId}.");
-            await _repository.Delete(request.BookId);
+            var book = await _repository.GetById(request.BookId);
+
+            if (book == null)
+            {
+                throw new BookNotFoundException($"Book with ID {request.BookId} was not found.");
+            }
+
+            await _repository.Delete(book.Id);
             return Unit.Value;
         }
     }
