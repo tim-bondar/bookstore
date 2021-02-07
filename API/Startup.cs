@@ -62,8 +62,6 @@ namespace API
             // Error handler
             app.UseMiddleware<ExceptionHandlerMiddleware>();
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             // We dont use authorization is this application
