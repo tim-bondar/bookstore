@@ -21,10 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ControllerTests" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\API\API.csproj" />
       <ProjectReference Include="..\Features\Features.csproj" />
     </ItemGroup>
 

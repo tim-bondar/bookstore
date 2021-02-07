@@ -2,7 +2,6 @@
 using AutoMapper;
 using Features;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace Tests
 {

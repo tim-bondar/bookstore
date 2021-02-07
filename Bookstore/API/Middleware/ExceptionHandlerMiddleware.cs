@@ -25,7 +25,9 @@ namespace API.Middleware
         private readonly ILogger _logger;
         private static readonly ActionDescriptor EmptyActionDescriptor = new ActionDescriptor();
 
-        public ExceptionHandlerMiddleware(RequestDelegate next, IActionResultExecutor<ObjectResult> executor,
+        public ExceptionHandlerMiddleware(
+            RequestDelegate next,
+            IActionResultExecutor<ObjectResult> executor,
             ILogger<ExceptionHandlerMiddleware> logger)
         {
             _next = next;
